@@ -6,6 +6,15 @@ permalink: /publication/nodedp
 excerpt: 'Designed a novel node action space for flexible manipulation.'
 date: 2026-3-31
 venue: 'RA-L'
+authors:
+  - name: 'Kangchen Lv'
+    co_first: true
+  - name: 'Mingrui Yu'
+    co_first: true
+  - name: 'Yongyi Jia'
+  - name: 'Chenyu Zhang'
+  - name: 'Xiang Li'
+    corresponding: true
 ---
 
 Null
