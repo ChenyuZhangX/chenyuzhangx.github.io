@@ -45,10 +45,12 @@ layout: default
               <p style="font-size: 0.8em; color: #888;">{% if has_co_first %}<sup>*</sup>Equal Contribution{% endif %}{% if has_co_first and has_corresponding %}&emsp;{% endif %}{% if has_corresponding %}<sup>&dagger;</sup>Corresponding Author{% endif %}</p>
             {% endif %}
           {% endif %}
-          {% if page.venue %}
-            <p>Published in <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }} </p>
-          {% else %}
+          {% if page.category == 'submissions' and page.venue %}
+            <p><em>In Submission to <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }}</em></p>
+          {% elsif page.category == 'submissions' %}
             <p><em>In Submission, {{ page.date | default: "1900-01-01" | date: "%Y" }}</em></p>
+          {% elsif page.venue %}
+            <p>Published in <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }} </p>
           {% endif %}
         {% elsif page.date %}
           <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Published:" }}</strong> <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | default: "1900-01-01" | date: "%B %d, %Y" }}</time></p>
