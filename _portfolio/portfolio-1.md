@@ -1,7 +1,10 @@
 ---
-title: "Portfolio item number 1"
-excerpt: "Short description of portfolio item number 1<br/><img src='/images/500x300.png'>"
+title: "Tsinghua University Wine Association"
+excerpt: "President of TUWA (2,000+ members); National Champion in Left Bank Bordeaux Cup China 2026. <br/><img src='/images/lbbc.png'>"
 collection: portfolio
 ---
 
-This is an item in your portfolio. It can be have images or nice text. If you name the file .md, it will be parsed as markdown. If you name the file .html, it will be parsed as HTML. 
+- Led the **Tsinghua University Wine Association (TUWA)** as President since Feb 2026, overseeing a large community of **2,000+ members** and managing events, promotion, and overall financial operations.
+- Won the **National Championship** in the Left Bank Bordeaux Cup China Regional Competition (Mar 2026, Blind Tasting); heading to France for the 2026 World Final in June.
+
+![Left Bank Bordeaux Cup](/images/lbbc.png)
