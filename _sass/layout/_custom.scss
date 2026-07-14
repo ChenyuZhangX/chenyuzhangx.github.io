@@ -305,15 +305,15 @@ html[data-theme="dark"] {
       outlined for scholarships — the distinction encodes award type) ---- */
 .honors {
   list-style: none;
-  margin: 1.2em 0 0;
+  margin: 1em 0 0;
   padding: 0;
 }
 
 .honor {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 4px;
+  gap: 12px;
+  padding: 8px 4px;
   border-bottom: 1px solid var(--global-border-color);
 }
 
@@ -323,12 +323,12 @@ html[data-theme="dark"] {
 
 .honor-badge {
   flex-shrink: 0;
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  font-size: 0.95rem;
+  font-size: 0.78rem;
   transition: transform 0.2s ease;
 }
 
@@ -354,11 +354,13 @@ html[data-theme="dark"] {
 
 .honor-name {
   font-weight: 600;
+  font-size: 0.9rem;
   color: var(--global-text-color);
 }
 
 .honor-sub {
   font-weight: 400;
+  font-size: 0.8rem;
   color: var(--global-text-color-light);
   margin-left: 8px;
 }
@@ -366,25 +368,25 @@ html[data-theme="dark"] {
 .honor-date {
   flex-shrink: 0;
   font-family: var(--global-mono-font, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: var(--global-text-color-light);
 }
 
 @media (max-width: 600px) {
   .honor {
-    gap: 12px;
-    padding: 12px 2px;
+    gap: 10px;
+    padding: 7px 2px;
   }
 
   .honor-badge {
-    width: 32px;
-    height: 32px;
-    font-size: 0.85rem;
+    width: 26px;
+    height: 26px;
+    font-size: 0.68rem;
   }
 
   .honor-sub {
     display: block;
     margin-left: 0;
-    margin-top: 2px;
+    margin-top: 1px;
   }
 }
