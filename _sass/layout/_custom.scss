@@ -254,10 +254,14 @@ h3[id],
 
 .pub-entry .pub-title a {
   color: var(--global-text-color);
+  text-decoration: none;
+  border-bottom: none;
 }
 
 .pub-entry .pub-title a:hover {
   color: var(--global-link-color);
+  text-decoration: none;
+  border-bottom: none;
 }
 
 .pub-entry .pub-authors {
