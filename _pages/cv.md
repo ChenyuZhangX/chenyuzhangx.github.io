@@ -41,6 +41,12 @@ Education
   </div>
 </div>
 
+Publications
+======
+  <ul>{% for post in site.publications reversed %}
+    {% include archive-single-cv.html %}
+  {% endfor %}</ul>
+
 Experience
 ======
 
@@ -100,12 +106,6 @@ Honors
 * **Comprehensive Excellent Scholarship** (SK Scholarship) — Nov 2023
 * **Comprehensive Excellent Scholarship** (Tsinghua Scholarship) — Nov 2023
 * **Academic Excellence Scholarship** (Departmental Scholarship) — Nov 2022
-
-Publications
-======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
 
 Outreach
 ======
