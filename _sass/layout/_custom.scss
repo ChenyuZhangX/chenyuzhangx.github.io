@@ -390,3 +390,32 @@ html[data-theme="dark"] {
     margin-top: 1px;
   }
 }
+
+/* ---- Prettier background + natural gradient section dividers ---- */
+:root {
+  --global-bg-color: #f7f8f9;
+}
+
+html[data-theme="dark"] {
+  --global-bg-color: #1b2128;
+}
+
+body {
+  background-color: var(--global-bg-color);
+  background-image: linear-gradient(180deg, var(--global-bg-color), color-mix(in srgb, var(--global-bg-color), #000 5%));
+  min-height: 100vh;
+}
+
+.page__content h2[id] {
+  margin-top: 2.6em;
+}
+
+.page__content h2[id]::before {
+  content: '';
+  display: block;
+  height: 2px;
+  margin-bottom: 0.7em;
+  border-radius: 2px;
+  background: linear-gradient(to right, transparent, var(--global-link-color), transparent);
+  opacity: 0.8;
+}
