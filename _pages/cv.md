@@ -28,24 +28,52 @@ Education
 Experience
 ======
 
-* **Meituan** - Research Intern in Robotic Foundation Models
-  * April 2026 -- Present, Beijing/Shenzhen, China
+<div class="timeline">
+  <div class="tl-entry">
+    <div class="tl-date">Apr 2026 — Present</div>
+    <div class="tl-info">
+      <div class="tl-org">Meituan</div>
+      <div class="tl-role">Research Intern in Robotic Foundation Models</div>
+      <div class="tl-loc">Beijing / Shenzhen, China</div>
+    </div>
+  </div>
 
-* **Department of Automation, Tsinghua University** — Research Intern in Robotics
-  * Sept 2024 -- June 2025, Beijing, China
-  * Mentor: Xiang Li
+  <div class="tl-entry">
+    <div class="tl-date">Sept 2024 — June 2025</div>
+    <div class="tl-info">
+      <div class="tl-org">Department of Automation, Tsinghua University</div>
+      <div class="tl-role">Research Intern in Robotics</div>
+      <div class="tl-note">Mentor: Xiang Li · Beijing, China</div>
+    </div>
+  </div>
 
-* **MARS Lab, Tsinghua University** — Research Intern in Robotics
-  * May 2024 -- June 2025, Beijing, China
-  * Mentor: Hang Zhao
+  <div class="tl-entry">
+    <div class="tl-date">May 2024 — June 2025</div>
+    <div class="tl-info">
+      <div class="tl-org">MARS Lab, Tsinghua University</div>
+      <div class="tl-role">Research Intern in Robotics</div>
+      <div class="tl-note">Mentor: Hang Zhao · Beijing, China</div>
+    </div>
+  </div>
 
-* **Shanghai Artificial Intelligence Laboratory** — Research Intern in Multimodal Models
-  * July 2024 -- Nov 2024, Shanghai, China
-  {% comment %} * Mentor: Jifeng Dai {% endcomment %}
+  <div class="tl-entry">
+    <div class="tl-date">July 2024 — Nov 2024</div>
+    <div class="tl-info">
+      <div class="tl-org">Shanghai Artificial Intelligence Laboratory</div>
+      <div class="tl-role">Research Intern in Multimodal Models</div>
+      <div class="tl-loc">Shanghai, China</div>
+    </div>
+  </div>
 
-* **Department of Electronic Engineering, Tsinghua University** — Research Intern in 3DCV
-  * July 2023 -- April 2024, Beijing, China
-  * Mentor: Yueqi Duan
+  <div class="tl-entry">
+    <div class="tl-date">July 2023 — Apr 2024</div>
+    <div class="tl-info">
+      <div class="tl-org">Department of Electronic Engineering, Tsinghua University</div>
+      <div class="tl-role">Research Intern in 3D Computer Vision</div>
+      <div class="tl-note">Mentor: Yueqi Duan · Beijing, China</div>
+    </div>
+  </div>
+</div>
 
 Honors
 ======
