@@ -28,6 +28,9 @@ Education
 Experience
 ======
 
+* **Meituan** - Research Intern in Robotic Foundation Models
+  * April 2026 -- Present, Beijing/Shenzhen, China
+
 * **Department of Automation, Tsinghua University** — Research Intern in Robotics
   * Sept 2024 -- June 2025, Beijing, China
   * Mentor: Xiang Li
@@ -38,7 +41,7 @@ Experience
 
 * **Shanghai Artificial Intelligence Laboratory** — Research Intern in Multimodal Models
   * July 2024 -- Nov 2024, Shanghai, China
-  * Mentor: Jifeng Dai
+  {% comment %} * Mentor: Jifeng Dai {% endcomment %}
 
 * **Department of Electronic Engineering, Tsinghua University** — Research Intern in 3DCV
   * July 2023 -- April 2024, Beijing, China
