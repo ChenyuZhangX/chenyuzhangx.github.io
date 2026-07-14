@@ -299,3 +299,91 @@ html[data-theme="dark"] {
     border-color: var(--global-border-color);
   }
 }
+
+/* ---- Honors (award rows: filled badge for graduation honors,
+      outlined for scholarships — the distinction encodes award type) ---- */
+.honors {
+  list-style: none;
+  margin: 1.2em 0 0;
+  padding: 0;
+}
+
+.honor {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--global-border-color);
+}
+
+.honor:last-child {
+  border-bottom: none;
+}
+
+.honor-badge {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease;
+}
+
+.h-grad .honor-badge {
+  background: var(--global-link-color);
+  color: var(--global-bg-color);
+}
+
+.h-sch .honor-badge {
+  background: transparent;
+  border: 1.5px solid var(--global-link-color);
+  color: var(--global-link-color);
+}
+
+.honor:hover .honor-badge {
+  transform: scale(1.08);
+}
+
+.honor-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.honor-name {
+  font-weight: 600;
+  color: var(--global-text-color);
+}
+
+.honor-sub {
+  font-weight: 400;
+  color: var(--global-text-color-light);
+  margin-left: 8px;
+}
+
+.honor-date {
+  flex-shrink: 0;
+  font-family: var(--global-mono-font, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.78rem;
+  color: var(--global-text-color-light);
+}
+
+@media (max-width: 600px) {
+  .honor {
+    gap: 12px;
+    padding: 12px 2px;
+  }
+
+  .honor-badge {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .honor-sub {
+    display: block;
+    margin-left: 0;
+    margin-top: 2px;
+  }
+}
