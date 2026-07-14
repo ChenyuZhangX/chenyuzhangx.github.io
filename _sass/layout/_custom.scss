@@ -111,17 +111,20 @@
 
 /* ---- Education timeline (mirrored: info left, date right; olive accent) ---- */
 .timeline.edu::before {
+  left: auto;
+  right: 110px;
   background: var(--edu-accent, #788c5d);
 }
 
 .timeline.edu .tl-entry {
-  grid-template-columns: 1fr 138px;
+  grid-template-columns: 1fr 100px;
+  gap: 20px;
 }
 
 .timeline.edu .tl-info {
   order: 1;
   padding-left: 0;
-  padding-right: 22px;
+  padding-right: 18px;
 }
 
 .timeline.edu .tl-date {
@@ -132,7 +135,7 @@
 
 .timeline.edu .tl-entry::after {
   left: auto;
-  right: 145px;
+  right: 105px;
   background: var(--edu-accent, #788c5d);
 }
 
