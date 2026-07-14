@@ -1,27 +1,21 @@
 <h2 id="publications">Publications</h2>
 
 {% if site.author.googlescholar %}
-  <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
+<div class="pub-scholar">You can also find my articles on <a href="{{ site.author.googlescholar }}">my Google Scholar profile</a>.</div>
 {% endif %}
 
 {% include base_path %}
 
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
-      {% endif %}
-      {% unless title_shown %}
-        <h3>{{ category[1].title }}</h3><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
-  {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
-  {% endfor %}
+{% assign cur_year = "" %}
+{% for post in site.publications reversed %}
+{% assign year = post.date | date: "%Y" %}
+{% if year != cur_year %}
+<div class="pub-year">{{ year }}</div>
+{% assign cur_year = year %}
 {% endif %}
+<div class="pub-entry">
+<div class="pub-title">{% if post.link %}<a href="{{ post.link }}">{{ post.title }}</a>{% else %}<a href="{{ post.url | prepend: base_path }}">{{ post.title }}</a>{% endif %}</div>
+<div class="pub-authors">{% for a in post.authors %}{% if a.name == site.author.name %}<strong>{{ a.name }}</strong>{% else %}{{ a.name }}{% endif %}{% if a.co_first %}<sup>*</sup>{% endif %}{% if a.corresponding %}<sup>&dagger;</sup>{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}</div>
+<div class="pub-venue">{% if post.category == 'submissions' and post.venue %}In Submission to <i>{{ post.venue }}</i>{% elsif post.category == 'submissions' %}In Submission{% elsif post.venue %}Published in <i>{{ post.venue }}</i>{% endif %}{% if post.bibtexurl %} &middot; <a href="{{ post.bibtexurl }}">BibTeX</a>{% endif %}</div>
+</div>
+{% endfor %}

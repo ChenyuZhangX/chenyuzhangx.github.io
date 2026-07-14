@@ -208,3 +208,94 @@ h2[id],
 h3[id] {
   scroll-margin-top: 90px;
 }
+
+/* ---- Publications (wkwan7-inspired, site palette) ---- */
+.pub-scholar {
+  margin: 0 0 1.4em;
+  font-size: 0.9rem;
+}
+
+.pub-year {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 2.4em 0 0.2em;
+  font-family: var(--global-mono-font, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--global-link-color);
+}
+
+.pub-year::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--global-link-color);
+  flex-shrink: 0;
+}
+
+.pub-entry {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--global-border-color);
+}
+
+.pub-entry:last-child {
+  border-bottom: none;
+}
+
+.pub-entry .pub-title {
+  margin: 0 0 5px;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.pub-entry .pub-title a {
+  color: var(--global-text-color);
+}
+
+.pub-entry .pub-title a:hover {
+  color: var(--global-link-color);
+}
+
+.pub-entry .pub-authors {
+  margin: 0 0 3px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--global-text-color-light);
+}
+
+.pub-entry .pub-authors strong {
+  color: var(--global-text-color);
+}
+
+.pub-entry .pub-venue {
+  font-size: 0.88rem;
+  color: var(--global-text-color-light);
+}
+
+.pub-entry .pub-venue a {
+  color: var(--global-link-color);
+}
+
+/* Dark-mode fix: --global-code-background-color is hardcoded near-white in the
+   dark theme, so pills/goal-box (which used it as a surface) rendered
+   white-on-white. Give them a lifted dark surface + themed text in dark mode. */
+html[data-theme="dark"] {
+  .research-pills span,
+  .goal-box {
+    background: #535353;
+    background: color-mix(in srgb, var(--global-bg-color), #fff 10%);
+  }
+
+  .research-pills span,
+  .goal-box,
+  .goal-box p {
+    color: var(--global-text-color);
+  }
+
+  .research-pills span {
+    border-color: var(--global-border-color);
+  }
+}
