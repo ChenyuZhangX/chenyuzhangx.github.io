@@ -419,3 +419,36 @@ body {
   background: linear-gradient(to right, transparent, var(--global-link-color), transparent);
   opacity: 0.8;
 }
+
+/* ---- Publication thumbnails (thumb | body grid; nodedp stacks its 2 panels) ---- */
+.pub-entry.with-thumb {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.pub-thumb {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pub-thumb img {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--global-border-color);
+  background: var(--global-bg-color);
+}
+
+@media (max-width: 600px) {
+  .pub-entry.with-thumb {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Experience timeline: make the connector line obvious (teal, matching dots) ---- */
+.timeline:not(.edu)::before {
+  background: var(--global-link-color);
+  opacity: 0.6;
+}
