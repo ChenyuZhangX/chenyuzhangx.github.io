@@ -194,6 +194,7 @@ exclude:
   - README
   - tmp
   - vendor
+  - backup
 keep_files:
   - .git
   - .svn

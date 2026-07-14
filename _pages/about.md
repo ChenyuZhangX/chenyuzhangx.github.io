@@ -22,3 +22,7 @@ I am a 1st year PhD student at the Institute for Interdisciplinary Information S
 
 I'm always happy to chat about research and ideas. If you share an interest in robotics, embodied AI, or anything adjacent, or are looking for collaboration, please feel free to reach out — I'd love to connect.
 
+{% include section-publications.html %}
+
+{% include section-cv.html %}
+

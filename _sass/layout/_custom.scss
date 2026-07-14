@@ -198,3 +198,13 @@
 .goal-box p + p {
   margin-top: 0.6em;
 }
+
+/* ---- Single-page anchor navigation ---- */
+html {
+  scroll-behavior: smooth;
+}
+
+h2[id],
+h3[id] {
+  scroll-margin-top: 90px;
+}
