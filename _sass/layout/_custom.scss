@@ -469,3 +469,11 @@ html:not([data-theme="dark"]) {
     font-weight: 700;
   }
 }
+
+/* Remove the link underline (border-bottom) from all main-content links —
+   titles, BibTeX, inline prose links — in both normal and hover states. */
+.page__content a,
+.page__content a:hover {
+  text-decoration: none;
+  border-bottom: none;
+}
