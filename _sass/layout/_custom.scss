@@ -109,6 +109,49 @@
   }
 }
 
+/* ---- Education timeline (mirrored: info left, date right; olive accent) ---- */
+.timeline.edu::before {
+  background: var(--edu-accent, #788c5d);
+}
+
+.timeline.edu .tl-entry {
+  grid-template-columns: 1fr 138px;
+}
+
+.timeline.edu .tl-info {
+  order: 1;
+  padding-left: 0;
+  padding-right: 22px;
+}
+
+.timeline.edu .tl-date {
+  order: 2;
+  text-align: left;
+  padding-top: 6px;
+}
+
+.timeline.edu .tl-entry::after {
+  left: auto;
+  right: 145px;
+  background: var(--edu-accent, #788c5d);
+}
+
+.timeline.edu .tl-role {
+  color: var(--edu-accent, #788c5d);
+}
+
+@media (max-width: 768px) {
+  .timeline.edu .tl-entry {
+    grid-template-columns: 1fr;
+  }
+  .timeline.edu .tl-info {
+    padding-right: 0;
+  }
+  .timeline.edu .tl-date {
+    text-align: left;
+  }
+}
+
 /* ---- About page: research interest pills ---- */
 .research-pills {
   display: flex;

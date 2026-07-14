@@ -12,18 +12,34 @@ redirect_from:
 Education
 ======
 
-* **Institute for Interdisciplinary Information Sciences, Tsinghua University**
-  * Ph.D student, majoring in Computer Science, Sept 2025 -- Present
-  * Field of Interest: Robotic Manipulation, VLA, World Model, MLLM
-  * **Advisor:** Mengdi Xu
+<div class="timeline edu">
+  <div class="tl-entry">
+    <div class="tl-info">
+      <div class="tl-org">Institute for Interdisciplinary Information Sciences, Tsinghua University</div>
+      <div class="tl-role">Ph.D. student, Computer Science</div>
+      <div class="tl-note">Field of Interest: Robotic Manipulation, VLA, World Model, MLLM · Advisor: Mengdi Xu</div>
+    </div>
+    <div class="tl-date">Sept 2025 — Present</div>
+  </div>
 
-* **Department of Automation, Tsinghua University**
-  * B.E. in Automation, Sept 2021 -- June 2025
-  * GPA: 3.85/4.0
+  <div class="tl-entry">
+    <div class="tl-info">
+      <div class="tl-org">Department of Automation, Tsinghua University</div>
+      <div class="tl-role">B.E. in Automation</div>
+      <div class="tl-note">GPA: 3.85 / 4.0</div>
+    </div>
+    <div class="tl-date">Sept 2021 — June 2025</div>
+  </div>
 
-* **Department of Statistics and Data Science, Tsinghua University**
-  * Minor in Statistics, Sept 2021 -- June 2025
-  * GPA: 4.0/4.0
+  <div class="tl-entry">
+    <div class="tl-info">
+      <div class="tl-org">Department of Statistics and Data Science, Tsinghua University</div>
+      <div class="tl-role">Minor in Statistics</div>
+      <div class="tl-note">GPA: 4.0 / 4.0</div>
+    </div>
+    <div class="tl-date">Sept 2021 — June 2025</div>
+  </div>
+</div>
 
 Experience
 ======

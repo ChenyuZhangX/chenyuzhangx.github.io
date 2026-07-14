@@ -17,7 +17,7 @@ I am a 1st year PhD student at the Institute for Interdisciplinary Information S
 </div>
 
 <div class="goal-box">
-<p>Ultimately, I aim to build <strong>adaptive physical agents</strong> — robots that perceive, reason, and adjust their behavior online to accomplish tasks in open-ended environments. The key property I seek is <strong>generality</strong>: a single agent that transfers across tasks, embodiments, and environments without being retrained from scratch.</p>
+<p>Ultimately, I aim to build <strong>adaptive physical agents</strong> — robots that perceive, reason, and adjust their behavior online to accomplish tasks in open-ended environments. 
 </div>
 
 I'm always happy to chat about research and ideas. If you share an interest in robotics, embodied AI, or anything adjacent, or are looking for collaboration, please feel free to reach out — I'd love to connect.
