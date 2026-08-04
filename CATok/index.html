@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CATok</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23111'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='central' text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-size='28' font-weight='800' fill='%236c8ebf'%3ECA%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <hr>
+    <ul>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#pipeline">Method</a></li>
+      <li><a href="#experiments">Main Results</a></li>
+      <li><a href="#causal-tokens">Analysis</a></li>
+      <li><a href="#causality-validation">Causality Validation</a></li>
+      <li><a href="#realworld">Real-World Deployment</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+
+    <!-- Hero -->
+    <div class="hero-text">CATok: <span class="hl">C</span>ausal <span class="hl">A</span>ction <span class="hl">Tok</span>enizer</div>
+    <div class="sub-hero-text">Rethinking Causal Action Tokenization with Condition Annealing in Flow Matching</div>
+    <div class="authors">Chenyu Zhang, Yuhang Cao, Daru Du, Yingxi Lu, Jing Shao, Ruoqu Chen, Jiajun Liu, Yicheng Liu, Hang Zhao, Mengdi Xu &nbsp;&middot;&nbsp; NeurIPS 2026 Submission</div>
+
+    <div class="quick-links">
+      <a href="#" title="Coming soon">[pdf &nbsp;<span style="font-size:11px;opacity:0.5;">coming soon</span>]</a>
+      <a href="https://github.com/CausalActionTokenizer/CausalActionTokenizer" target="_blank">[code]</a>
+      <a href="#demo" title="Watch real-world rollout demos">[demo]</a>
+    </div>
+
+    <div class="pipeline-wrap" style="margin-bottom: 0;">
+      <img src="./media/teaser.png" alt="CATok Teaser">
+    </div>
+    <p class="figure-caption">
+      <strong>CATok</strong> reframes action tokenization as a causally structured generative process. Each discrete token encodes the residual reconstruction signal at a specific flow-matching stage, establishing a coarse-to-fine causal token space aligned with autoregressive modeling.
+    </p>
+
+    <!-- Abstract -->
+    <div class="tagline" id="abstract">Abstract</div>
+    <div class="section">
+      <p>
+        Autoregressive Vision-Language-Action (VLA) models offer a scalable path to robot learning, yet existing action tokenizers treat tokenization as a compression problem, producing representations that are semantically misaligned with the autoregressive backbone. We propose <strong>CATok</strong>, a causal action tokenizer that reframes tokenization as a causally structured generative process.
+      </p>
+      <p>
+        CATok introduces a <em>conditional annealing mechanism</em> that extracts action tokens by progressively annealing a flow-matching process: each token is conditioned on all preceding tokens and encodes the residual reconstruction signal at a specific noise level, establishing a coarse-to-fine causal token space whose generative semantics are structurally aligned with autoregressive modeling. A <em>token-conditioned flow-matching decoder</em> built on Multimodal Diffusion Transformer (MMDiT) reconstructs continuous action chunks from these discrete tokens with the precision of hybrid diffusion-head architectures. This discrete bottleneck enforces <em>knowledge insulation</em> by design, cleanly separating high-level semantic reasoning from low-level motor execution without requiring explicit attention masking.
+      </p>
+      <p>
+        Extensive evaluations across three simulation benchmarks demonstrate that CATok consistently surpasses existing tokenization methods in reconstruction fidelity&ndash;compression tradeoff and inference efficiency, while improving VLA task success rate, establishing a high-performance, scalable foundation for purely autoregressive VLA systems.
+      </p>
+    </div>
+
+    <!-- Pipeline -->
+    <div class="tagline" id="pipeline">Method</div>
+    <div class="section">
+      <p>
+        CATok consists of three components: (1) a <strong>Dual-Stream Action Encoder</strong> that maps raw action chunks into a compact set of latent query tokens via co-attention with an MMDiT-based transformer; (2) a <strong>Bottleneck Vector Quantizer</strong> that discretizes latent tokens into a finite codebook using factorized codes; and (3) a <strong>Flow-Matching Decoder with Conditional Annealing</strong> that reconstructs high-fidelity action trajectories while enforcing a coarse-to-fine causal structure.
+      </p>
+      <p>
+        The key design is the <em>conditional annealing mechanism</em>: at flow-matching timestep <em>t</em>, the first &lfloor;<em>tK</em>&rfloor; token embeddings are progressively masked, forcing each token to specialize in a distinct generative stage&mdash;from coarse global guidance at high-noise stages to fine-grained residual corrections as the trajectory matures. This induces a causally ordered hierarchy naturally aligned with autoregressive action generation.
+      </p>
+    </div>
+
+    <div class="pipeline-wrap">
+      <img src="./media/0506_CATok.png" alt="CATok Architecture Overview">
+    </div>
+    <p class="figure-caption">
+      <strong>Figure 1. CATok Pipeline.</strong> CATok encodes an action chunk with a Dual-Stream Encoder into latent queries, discretizes them via a Bottleneck VQ, and reconstructs actions using a Flow-Matching Decoder with Conditional Annealing. The annealing schedule assigns each token to a distinct stage of the flow trajectory, establishing a coarse-to-fine causal token space.
+    </p>
+
+    <div class="pipeline-wrap" style="margin-top: 24px;">
+      <img src="./media/0506_VLA-CATok.png" alt="VLA-CATok Overview">
+    </div>
+    <p class="figure-caption">
+      <strong>Figure 2. VLA-CATok.</strong> VLA-CATok feeds visual, language, and proprioceptive tokens into a VLM backbone to autoregressively predict causal action tokens. A frozen MMDiT flow-matching decoder reconstructs the final continuous action. Discrete tokens serve as the sole interface, naturally insulating the VLM's pretrained knowledge from action-specific gradients.
+    </p>
+
+    <!-- Experiments -->
+    <div class="tagline" id="experiments">Main Results</div>
+    <div class="section">
+      <p>
+        We evaluate CATok on three simulation benchmarks&mdash;LIBERO, SimplerEnv (Simpler-Bridge), and RoboTwin 2.0&mdash;against three representative tokenizer baselines: <strong>BIN</strong> (uniform per-dimension discretization), <strong>FAST</strong> (DCT-based compression with BPE tokenization), and <strong>OAT</strong> (learned fixed-length tokenizer with prefix-based decoding).
+      </p>
+      <p>
+        <strong>Higher task success rate.</strong> CATok achieves the highest success rates across all benchmarks (95.9% avg. on LIBERO), with the largest gains on long-horizon tasks (LIBERO-Long: 91.0% vs. 90.1% for FAST). Causal token ordering enables autoregressive policies to model long-range temporal dependencies more effectively.
+      </p>
+      <p>
+        <strong>Faster inference.</strong> CATok delivers <strong>1.7&times;</strong> faster VLA inference than FAST and <strong>3.9&times;</strong> faster than BIN, enabling more responsive real-time deployment.
+      </p>
+      <p>
+        <strong>Better fidelity&ndash;compression balance.</strong> CATok achieves a <strong>3.6&times;</strong> stronger VRR&times;CR score than FAST at the same token count, demonstrating that causal structure improves reconstruction quality without sacrificing compression.
+      </p>
+      <p>
+        <strong>Higher training efficiency.</strong> CATok consistently reaches higher success rates at the same training step count, attributable to its stage-wise token factorization that makes each token prediction more informative for trajectory generation.
+      </p>
+    </div>
+
+    <div style="clear:both; overflow-x: auto; margin: 20px 0;">
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th rowspan="2" style="vertical-align:bottom;">Method</th>
+          <th colspan="5" style="text-align:center; border-bottom: 1px solid var(--border);">LIBERO</th>
+          <th colspan="5" style="text-align:center; border-bottom: 1px solid var(--border);">Simpler-Bridge</th>
+          <th colspan="2" style="text-align:center; border-bottom: 1px solid var(--border);">RoboTwin 2.0</th>
+        </tr>
+        <tr>
+          <th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th><th>Avg.</th>
+          <th>Spoon</th><th>Carrot</th><th>Stack</th><th>Eggplant</th><th>Avg.</th>
+          <th>Clean</th><th>Rand.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>BIN</td>
+          <td>0.586</td><td>0.878</td><td>0.680</td><td>0.604</td><td>0.687</td>
+          <td class="best">0.542</td><td>0.333</td><td>0.208</td><td class="best">0.708</td><td>0.448</td>
+          <td>0.213</td><td>0.221</td>
+        </tr>
+        <tr>
+          <td>FAST</td>
+          <td>0.960</td><td class="best">0.998</td><td class="best">0.962</td><td>0.901</td><td>0.955</td>
+          <td>0.500</td><td>0.375</td><td>0.375</td><td>0.625</td><td>0.469</td>
+          <td>0.478</td><td>0.478</td>
+        </tr>
+        <tr>
+          <td>OAT</td>
+
+          <td>0.428</td><td>0.876</td><td>0.704</td><td>0.276</td><td>0.571</td>
+          <td>0.417</td><td>0.208</td><td>0.167</td><td>0.667</td><td>0.365</td>
+          <td>0.229</td><td>0.233</td>
+        </tr>
+        <tr style="background: rgba(108,142,191,0.07);">
+          <td><strong>CATok (Ours)</strong></td>
+          <td class="best">0.978</td><td>0.994</td><td>0.954</td><td class="best">0.910</td><td class="best">0.959</td>
+          <td>0.458</td><td class="best">0.417</td><td class="best">0.542</td><td>0.542</td><td class="best">0.490</td>
+          <td class="best">0.489</td><td class="best">0.531</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="figure-caption">
+      Table 1. Simulation benchmarking results. CATok consistently outperforms baseline tokenizers across all benchmarks. <span class="best">Blue bold</span> values indicate best results per column.
+    </p>
+
+    <div class="video-grid-2" style="margin-top: 24px;">
+      <figure>
+        <img src="./media/training_efficiency.png" alt="Training Efficiency" style="width:100%; display:block;">
+        <figcaption><strong>Figure 3. Training efficiency on Simpler-Bridge.</strong> CATok achieves higher success rates with fewer training steps.</figcaption>
+      </figure>
+      <figure>
+        <img src="./media/infer_speed_bar_errbar.png" alt="Inference Latency" style="width:100%; display:block;">
+        <figcaption><strong>Figure 4. VLA inference latency.</strong> CATok (453 ms) is 1.7&times; faster than FAST (778 ms) and 3.9&times; faster than Binning (1747 ms).</figcaption>
+      </figure>
+    </div>
+
+    <div class="pipeline-wrap" style="margin-top: 24px;">
+      <img src="./media/table2_bar.png" alt="Intrinsic Tokenizer Properties">
+    </div>
+    <p class="figure-caption">
+      <strong>Figure 5. Intrinsic properties of action tokenizers.</strong> (a&ndash;c) CATok<sub>8</sub> achieves the highest VRR&times;CR score (16.85), outperforming all baselines at the same compression level. (d&ndash;e) Encode and decode latencies on log scale&mdash;CATok achieves lower latency than FAST with comparable or better downstream performance.
+    </p>
+
+    <!-- Causal Tokens -->
+    <div class="tagline" id="causal-tokens">Analysis</div>
+    <div class="section">
+      <p>
+        <strong>Causal Predictive Ordering.</strong> Per-token Shannon entropy decreases monotonically in the forward token order (Figure 6(a)), while reversing the order flips the trend&mdash;confirming the learned ordering is directional and causal. FAST and BIN show no such structure.
+      </p>
+      <p>
+        <strong>Stage-wise Generative Semantics.</strong> t-SNE of VQ embeddings (Figure 6(b)) reveals clear slot-dependent geometry: early tokens form smooth elongated regions, late tokens form compact separated clusters. Prefix reconstructions (Figure 6(c)) show coherent coarse-to-fine trajectory updates, confirming each token contributes a distinct generative increment.
+      </p>
+    </div>
+
+    <div class="pipeline-wrap">
+      <img src="./media/exp_tokenizer_v3.png" alt="Causal Token Analysis">
+    </div>
+    <p class="figure-caption">
+      <strong>Figure 6. CATok produces causal tokens with generative semantics.</strong>
+      <strong>(a) Causal ordering:</strong> entropy decreases in the forward token order and increases in reverse, while FAST and BIN show weaker positional structure.
+      <strong>(b) Token embedding geometry:</strong> t-SNE map shows clear slot-dependent organization progressing from smooth early-token regions to compact late-token clusters.
+      <strong>(c) Prefix reconstruction:</strong> increasing token prefixes produce structured trajectory updates, with each token contributing a meaningful generative increment to the decoded action.
+    </p>
+
+    <!-- Causality Validation -->
+    <div class="tagline" id="causality-validation">Causality Validation</div>
+    <p class="section-subtitle">Learned coarse-to-fine token roles &mdash; validated by native-decoder intervention</p>
+    <div class="section">
+      <p>
+        We clarify and test three linked points. <strong>&ldquo;Coarse-to-fine&rdquo;</strong> refers to learned flow-stage-wise refinement&mdash;not a prescribed frequency or fixed-basis decomposition. A <strong>donor-swap intervention</strong> with CATok&rsquo;s native velocity network tests whether individual token positions have distinct, stage-specific effects. <strong>Single-token-zeroing visualizations</strong> reveal how those roles map onto action dimensions: early tokens mainly encode coarse gripper-related task state, whereas late tokens encode fine joint-level trajectory details. Together, these analyses test both the <em>flow-stage alignment</em> and the <em>functional granularity</em> of the learned token roles.
+      </p>
+    </div>
+
+    <div class="subsection">1) &ldquo;Coarse-to-fine&rdquo; means learned flow-stage refinement</div>
+    <div class="section">
+      <p>
+        We do <strong>not</strong> claim that CATok learns a prescribed basis, such as a low-to-high-frequency decomposition. Here, &ldquo;coarse-to-fine&rdquo; describes the <em>generation process and the granularity of learned control information</em>, not the spectral content of individual tokens.
+      </p>
+      <p>
+        The mechanism is straightforward. <strong>Flow matching is a gradual refinement process:</strong> the ODE evolves an action trajectory from a high-noise state toward the low-noise data state, so different flow times correspond to different refinement stages. <strong>Conditional annealing aligns token positions with those stages:</strong> as flow time changes, the suffix-masking schedule changes which token positions are available to the velocity network, so each position is trained to contribute within a particular flow-time range. <strong>Repeated training induces functional specialization:</strong> tokens associated with earlier stages encode coarse, task-level information, whereas tokens associated with later stages encode the details needed to refine the trajectory.
+      </p>
+      <p>
+        This yields two testable expectations: <strong>(i)</strong> each token&rsquo;s influence should concentrate near its assigned flow stage, and <strong>(ii)</strong> token content should progress from coarse task-execution state to fine trajectory detail. Sections 2 and 3 test these expectations, respectively, using the native inference modules.
+      </p>
+    </div>
+
+    <div class="subsection">2) Native-decoder donor-swap intervention</div>
+    <div class="section">
+      <p>
+        We use the trained CATok tokenizer checkpoint (<em>K</em>=32, codebook 4096, horizon 20), its MMDiT velocity network <em>v<sub>&theta;</sub></em>, and its ODE decoder <em>D</em>&mdash;the same modules used at inference, not a separately trained prefix decoder. We encode 128 held-out Franka action chunks (7-DoF + gripper) as <em>Q</em> = (<em>q</em><sub>1</sub>, &hellip;, <em>q<sub>K</sub></em>). For each token <em>k</em>, we replace its embedding with the same-position embedding from a donor chunk&mdash;keeping the intervention within the slot&rsquo;s empirical distribution&mdash;while holding <em>x<sub>t</sub></em>, <em>t</em>, and the noise realization fixed, so the resulting change isolates token <em>k</em>&rsquo;s effect on the velocity prediction. For each flow time <em>t</em> we measure
+        &Delta;<sub>k</sub>(<em>t</em>) = MSE(<em>v<sub>&theta;</sub></em>(<em>x<sub>t</sub></em>, <em>t</em>, <em>Q</em><sup>swap(k)</sup>), <em>x</em><sub>1</sub>&minus;<em>x</em><sub>0</sub>) &minus; MSE(<em>v<sub>&theta;</sub></em>(<em>x<sub>t</sub></em>, <em>t</em>, <em>Q</em>), <em>x</em><sub>1</sub>&minus;<em>x</em><sub>0</sub>),
+        where MSE is &ell;. Because conditional annealing masks token <em>k</em> outside its active range, we normalize its effect within that range.
+      </p>
+    </div>
+
+    <div class="pipeline-wrap">
+      <img src="./media/causality_influence_matrix.png" alt="Token x flow-time influence matrix">
+    </div>
+    <p class="figure-caption">
+      <strong>Figure 7. Token &times; flow-time influence matrix &Delta;(t).</strong> Top: 32 individual tokens, raw (a) and per-token-normalized (b). Bottom: 8 groups of 4 tokens, raw (c) and per-group-normalized (d); cyan &ldquo;+&rdquo; marks the theoretical peak stage <em>t</em>=(2<em>g</em>+1)/(2<em>G</em>). In both granularities the matrix has triangular support (token <em>k</em> is visible only for <em>t</em> &lt; (<em>k</em>+1)/<em>K</em>, confirming the conditional-annealing schedule &kappa;(t)=<em>tK</em>), and each token's influence concentrates near its own on-switch boundary rather than spreading uniformly across its active range. Grouping smooths per-token noise and yields a cleaner monotonic peak-t trend (<strong>corr(<em>g</em>, <em>t*</em>) = 0.995</strong> vs. 0.985 ungrouped).
+    </p>
+
+    <div class="section">
+      <p>
+        Swapping a token changes the velocity field primarily at that token&rsquo;s assigned flow stage:
+      </p>
+      <ul>
+        <li><strong>Schedule-consistent support.</strong> Token <em>k</em> is visible only for <em>t</em> &lt; (<em>k</em>+1)/<em>K</em>, consistent with the suffix-masking schedule &kappa;(t) = <em>tK</em>.</li>
+        <li><strong>Stage-specific peaks.</strong> Within its active range, each token&rsquo;s peak influence occurs near its assigned stage, <em>t*</em> &asymp; <em>k</em>/<em>K</em>, with <strong>corr(<em>k</em>, <em>t*</em>) = 0.985</strong> (0.995 after grouping). The localized, stage-aligned responses show that token positions are functionally differentiated and not interchangeable&mdash;confirming expectation (i).</li>
+      </ul>
+    </div>
+
+    <div class="subsection">3) Action-dimension visualization by single-token zeroing</div>
+    <div class="section">
+      <p>
+        We next examine whether this stage specialization also exhibits the expected coarse-to-fine progression in action semantics. We zero each token embedding in turn, decode with the native ODE decoder, and visualize the resulting change in every action dimension&mdash;a complementary, trajectory-level view of what each token position controls.
+      </p>
+    </div>
+
+    <div class="pipeline-wrap" style="margin-top: 24px;">
+      <img src="./media/causality_mask_effect_step1.png" alt="Per-dimension trajectory change under single-token zeroing" style="width:100%; display:block;">
+    </div>
+    <p class="figure-caption">
+      <strong>Figure 8. Per-dimension trajectory change under single-token zeroing (1-step decode).</strong> Each cell is the RMS change of an action dimension (log color) when token <em>k</em> is zeroed. Early tokens (<em>k</em> &le; 4) perturb primarily the gripper-related dimension&mdash;the gripper command reflects the task-execution state, so these tokens encode a coarse description of task progress. Late tokens (<em>k</em> &ge; 12) perturb individual joint dimensions, encoding the fine-grained motion needed to specify and refine the trajectory. Token roles thus progress from coarse gripper/task-state information to fine joint/trajectory-detail information&mdash;confirming expectation (ii). This organization is learned through flow-stage alignment; it is not a hand-designed assignment of token semantics.
+    </p>
+
+    <div class="section" style="margin-top: 8px;">
+      <p>
+        <strong>Together,</strong> the three points establish that (1) conditional annealing defines a learned coarse-to-fine refinement process, (2) donor swaps verify that token effects are distinct and aligned with their assigned flow stages, and (3) single-token zeroing reveals the corresponding functional progression from early gripper/task-state information to late joint/trajectory-detail information.
+      </p>
+    </div>
+
+    <!-- Real-World Deployment -->
+    <div class="tagline" id="realworld">Real-World Deployment</div>
+
+    <div class="subsection">Experimental Setup</div>
+    <div class="section">
+      <p>
+        To verify that CATok transfers to real-robot deployment under camera noise, lighting variation, and hardware differences, we design a suite of real-robot evaluation tasks. The VLA built on CATok as its tokenizer consistently outperforms the QwenFAST baseline, with significant gains in spatial generalization, color generalization, and long-horizon task completion.
+      </p>
+      <p>
+        We collect 362 trajectories of <em>"pick up the yellow cup and place it on the plate."</em> and 220 trajectories of <em>"stack the cups."</em> Using Qwen3.5-VL as the backbone, we train two VLAs that differ only in their tokenizer&mdash;QwenFAST and QwenCATok. CATok is pretrained on the collected real-robot data together with InternA1 joint data, so that its action reconstruction accuracy matches that of FAST. We evaluate on three task suites:
+      </p>
+
+      <div class="scene-grid">
+        <figure>
+          <img src="./media/setup_pick.jpg" alt="Pick-Spatial scene layout">
+          <figcaption>Pick-Spatial</figcaption>
+        </figure>
+        <figure>
+          <img src="./media/setup_pick-red.jpg" alt="Pick-Color scene layout">
+          <figcaption>Pick-Color</figcaption>
+        </figure>
+        <figure>
+          <img src="./media/setup_stack.jpg" alt="Stack-Long scene layout">
+          <figcaption>Stack-Long</figcaption>
+        </figure>
+      </div>
+      <p class="figure-caption">
+        <strong>Figure 9. Scene layouts for the three real-robot task suites.</strong> Left to right: Pick-Spatial, Pick-Color, Stack-Long.
+      </p>
+
+      <ul>
+        <li><strong>Pick-Spatial.</strong> The task is to pick up the yellow cup and place it on the plate. We fix 10 relative cup-and-plate positions; each model rolls out twice per position (20 rollouts total) and we report the success rate. Tests spatial generalization.</li>
+        <li><strong>Pick-Color.</strong> The task is to pick up the red cup and place it on the plate. The cup-plate relative position is fixed, and only the yellow cup seen during training is replaced with a red cup; each model rolls out 10 times. The training set contains no trajectories of picking up a red cup. Tests color generalization.</li>
+        <li><strong>Stack-Long.</strong> A long-horizon task: the robot must first pick up the red cup and stack it onto the yellow cup, then pick up the pink cup and stack it again. The relative positions of the three cups are fixed; each model rolls out 40 times. Tests long-horizon task completion.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">Demo</div>
+    <div class="section">
+      <p>
+        We deploy <strong>QwenCATok</strong> (our causal action tokenizer integrated into a VLA policy) alongside the <strong>QwenFAST</strong> baseline on a real Franka manipulator across three contact-rich tasks&mdash;<em>pick</em>, <em>pick-red</em>, and <em>stack</em>. Each cell below is a single, unedited end-to-end rollout.
+      </p>
+    </div>
+
+    <div class="demo-toolbar">
+      <button id="speed-toggle" class="speed-btn" type="button" title="Toggle playback speed" aria-label="Toggle playback speed">1&times;</button>
+    </div>
+
+    <div class="demo-matrix" id="demo">
+      <span class="dm-corner"></span>
+      <span class="dm-colhead">Pick</span>
+      <span class="dm-colhead">Pick (Red)</span>
+      <span class="dm-colhead">Stack</span>
+
+      <span class="dm-rowhead">QwenCATok<span class="dm-ours">Ours</span></span>
+      <figure class="dm-cell">
+        <video autoplay loop muted playsinline controls preload="metadata">
+          <source src="./media/catok_pick_success.mp4#t=0.1" type="video/mp4">
+        </video>
+        <figcaption>QwenCATok &mdash; Pick</figcaption>
+      </figure>
+      <figure class="dm-cell">
+        <video autoplay loop muted playsinline controls preload="metadata">
+          <source src="./media/catok_pick_red_success.mp4#t=0.1" type="video/mp4">
+        </video>
+        <figcaption>QwenCATok &mdash; Pick (Red)</figcaption>
+      </figure>
+      <figure class="dm-cell">
+        <video autoplay loop muted playsinline controls preload="metadata">
+          <source src="./media/catok_stack_success.mp4#t=0.1" type="video/mp4">
+        </video>
+        <figcaption>QwenCATok &mdash; Stack</figcaption>
+      </figure>
+
+      <span class="dm-rowhead">QwenFAST</span>
+      <figure class="dm-cell">
+        <video autoplay loop muted playsinline controls preload="metadata">
+          <source src="./media/fast_pick_success.mp4#t=0.1" type="video/mp4">
+        </video>
+        <figcaption>QwenFAST &mdash; Pick</figcaption>
+      </figure>
+      <figure class="dm-cell">
+        <video autoplay loop muted playsinline controls preload="metadata">
+          <source src="./media/fast_pick_red_success.mp4#t=0.1" type="video/mp4">
+        </video>
+        <figcaption>QwenFAST &mdash; Pick (Red)</figcaption>
+      </figure>
+      <figure class="dm-cell">
+        <video autoplay loop muted playsinline controls preload="metadata">
+          <source src="./media/fast_stack_success.mp4#t=0.1" type="video/mp4">
+        </video>
+        <figcaption>QwenFAST &mdash; Stack</figcaption>
+      </figure>
+    </div>
+    <p class="figure-caption">
+      <strong>Figure 10. Real-world rollout comparison.</strong> Top row: <strong>QwenCATok</strong> (ours). Bottom row: <strong>QwenFAST</strong> baseline. Columns (left to right): pick, pick-red, stack.
+    </p>
+
+    <div style="overflow-x: auto; margin: 20px 0;">
+      <table class="results-table">
+        <thead>
+          <tr><th>Method</th><th>Pick-Spatial</th><th>Pick-Color</th><th>Stack-Long</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>QwenFAST</td>
+            <td>0.45</td><td>0.30</td><td>0.275</td>
+          </tr>
+          <tr style="background: rgba(108,142,191,0.07);">
+            <td><strong>QwenCATok (Ours)</strong></td>
+            <td class="best">0.65</td><td class="best">0.50</td><td class="best">0.475</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="figure-caption">
+      <strong>Table 2. Real-world success rates.</strong> QwenCATok outperforms QwenFAST on all three tasks with a uniform +20pp absolute improvement. <span class="best">Blue bold</span> marks the best result per column.
+    </p>
+
+    <div class="section" style="margin-top: 8px;">
+      <p>
+        These real-world gains corroborate the mechanisms identified in simulation. CATok's causally structured token space&mdash;each token encoding a semantically distinct, coarse-to-fine generative stage&mdash;aligns the discrete bottleneck with the autoregressive backbone, and this semantic alignment generalizes to real-world perturbations: spatial repositioning (Pick-Spatial, 20 rollouts, 0.45&rarr;0.65, +44% relative) and out-of-distribution color (Pick-Color, 10 rollouts, 0.30&rarr;0.50, +67% relative). The largest gain appears on Stack-Long (40 rollouts, 0.275&rarr;0.475, +73% relative), consistent with the same stage-wise causal factorization that drives training efficiency in simulation&mdash;by making each token prediction more informative, causal token ordering lets the policy better capture the long-range temporal dependencies required for compositional, long-horizon tasks. Overall, CATok's structural properties&mdash;semantic token alignment and stage-wise causal factorization&mdash;translate from simulation into robust and consistent real-world gains.
+      </p>
+    </div>
+
+  </div><!-- end main-content -->
+
+  <div class="footer">
+    Website template adapted from <a href="https://videomimic.net/" target="_blank">VideoMimic</a>.
+  </div>
+
+  <script>
+    (function () {
+      var speeds = [1, 2, 4];
+      var idx = 0;
+      var btn = document.getElementById('speed-toggle');
+      var videos = document.querySelectorAll('.demo-matrix video');
+      function apply() {
+        var r = speeds[idx];
+        videos.forEach(function (v) { v.playbackRate = r; });
+        btn.textContent = r + '×';
+        btn.classList.toggle('active', r !== 1);
+      }
+      btn.addEventListener('click', function () {
+        idx = (idx + 1) % speeds.length;
+        apply();
+      });
+      apply();
+    })();
+  </script>
+
+</body>
+</html>
