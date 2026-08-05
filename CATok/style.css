@@ -108,13 +108,20 @@ body {
 .authors a { color: inherit; text-decoration: none; }
 .authors a:hover { text-decoration: underline; color: var(--accent); }
 .affiliations {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
-  font-family: 'Helvetica Neue', sans-serif;
-  margin-bottom: 32px;
+  font-family: 'Times New Roman', Times, serif;
+  margin-bottom: 2px;
   line-height: 1.7;
 }
 .affiliations sup { font-size: 0.7em; }
+.affiliations-note {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: 'Helvetica Neue', sans-serif;
+  margin-bottom: 32px;
+}
+.affiliations-note sup { font-size: 0.7em; }
 
 /* ── Quick links ── */
 .quick-links {
