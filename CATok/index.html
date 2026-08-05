@@ -193,24 +193,11 @@
     <p class="section-subtitle">Learned coarse-to-fine token roles &mdash; validated by native-decoder intervention</p>
     <div class="section">
       <p>
-        We clarify and test three linked points. <strong>&ldquo;Coarse-to-fine&rdquo;</strong> refers to learned flow-stage-wise refinement&mdash;not a prescribed frequency or fixed-basis decomposition. A <strong>donor-swap intervention</strong> with CATok&rsquo;s native velocity network tests whether individual token positions have distinct, stage-specific effects. <strong>Single-token-zeroing visualizations</strong> reveal how those roles map onto action dimensions: early tokens mainly encode coarse gripper-related task state, whereas late tokens encode fine joint-level trajectory details. Together, these analyses test both the <em>flow-stage alignment</em> and the <em>functional granularity</em> of the learned token roles.
+        We use two native-decoder interventions&mdash;a donor-swap at the velocity level and single-token zeroing at the trajectory level&mdash;to characterize the generative roles of individual token positions. Under conditional annealing, token <em>k</em> is bound to flow stage <em>k</em> via suffix masking, so as flow matching refines the trajectory from high- to low-noise stages, each token is trained to contribute at a particular refinement stage. We examine whether the learned tokens acquire <strong>distinct, flow-stage-aligned effects</strong> and a <strong>coarse-to-fine functional progression</strong> in action space; here, &ldquo;coarse-to-fine&rdquo; denotes the granularity of learned control information along the refinement process, not a prescribed frequency or fixed-basis decomposition.
       </p>
     </div>
 
-    <div class="subsection">1) &ldquo;Coarse-to-fine&rdquo; means learned flow-stage refinement</div>
-    <div class="section">
-      <p>
-        We do <strong>not</strong> claim that CATok learns a prescribed basis, such as a low-to-high-frequency decomposition. Here, &ldquo;coarse-to-fine&rdquo; describes the <em>generation process and the granularity of learned control information</em>, not the spectral content of individual tokens.
-      </p>
-      <p>
-        The mechanism is straightforward. <strong>Flow matching is a gradual refinement process:</strong> the ODE evolves an action trajectory from a high-noise state toward the low-noise data state, so different flow times correspond to different refinement stages. <strong>Conditional annealing aligns token positions with those stages:</strong> as flow time changes, the suffix-masking schedule changes which token positions are available to the velocity network, so each position is trained to contribute within a particular flow-time range. <strong>Repeated training induces functional specialization:</strong> tokens associated with earlier stages encode coarse, task-level information, whereas tokens associated with later stages encode the details needed to refine the trajectory.
-      </p>
-      <p>
-        This yields two testable expectations: <strong>(i)</strong> each token&rsquo;s influence should concentrate near its assigned flow stage, and <strong>(ii)</strong> token content should progress from coarse task-execution state to fine trajectory detail. Sections 2 and 3 test these expectations, respectively, using the native inference modules.
-      </p>
-    </div>
-
-    <div class="subsection">2) Native-decoder donor-swap intervention</div>
+    <div class="subsection">Donor-swap influence matrix</div>
     <div class="section">
       <p>
         We use the trained CATok tokenizer checkpoint (<em>K</em>=32, codebook 4096, horizon 20), its MMDiT velocity network <em>v<sub>&theta;</sub></em>, and its ODE decoder <em>D</em>&mdash;the same modules used at inference, not a separately trained prefix decoder. We encode 128 held-out Franka action chunks (7-DoF + gripper) as <em>Q</em> = (<em>q</em><sub>1</sub>, &hellip;, <em>q<sub>K</sub></em>). For each token <em>k</em>, we replace its embedding with the same-position embedding from a donor chunk&mdash;keeping the intervention within the slot&rsquo;s empirical distribution&mdash;while holding <em>x<sub>t</sub></em>, <em>t</em>, and the noise realization fixed, so the resulting change isolates token <em>k</em>&rsquo;s effect on the velocity prediction. For each flow time <em>t</em> we measure
@@ -228,18 +215,18 @@
 
     <div class="section">
       <p>
-        Swapping a token changes the velocity field primarily at that token&rsquo;s assigned flow stage:
+        The influence matrix exhibits two properties:
       </p>
       <ul>
         <li><strong>Schedule-consistent support.</strong> Token <em>k</em> is visible only for <em>t</em> &lt; (<em>k</em>+1)/<em>K</em>, consistent with the suffix-masking schedule &kappa;(t) = <em>tK</em>.</li>
-        <li><strong>Stage-specific peaks.</strong> Within its active range, each token&rsquo;s peak influence occurs near its assigned stage, <em>t*</em> &asymp; <em>k</em>/<em>K</em>, with <strong>corr(<em>k</em>, <em>t*</em>) = 0.985</strong> (0.995 after grouping). The localized, stage-aligned responses show that token positions are functionally differentiated and not interchangeable&mdash;confirming expectation (i).</li>
+        <li><strong>Stage-specific peaks.</strong> Within its active range, each token&rsquo;s peak influence occurs near its assigned stage, <em>t*</em> &asymp; <em>k</em>/<em>K</em>, with <strong>corr(<em>k</em>, <em>t*</em>) = 0.985</strong> (0.995 after grouping). Early tokens peak at high-noise (coarse) stages and late tokens at low-noise (fine) stages, so token effects are distinct and aligned with their assigned flow stages rather than interchangeable.</li>
       </ul>
     </div>
 
-    <div class="subsection">3) Action-dimension visualization by single-token zeroing</div>
+    <div class="subsection">Single-token zeroing: per-dimension trajectory change</div>
     <div class="section">
       <p>
-        We next examine whether this stage specialization also exhibits the expected coarse-to-fine progression in action semantics. We zero each token embedding in turn, decode with the native ODE decoder, and visualize the resulting change in every action dimension&mdash;a complementary, trajectory-level view of what each token position controls.
+        We next characterize how this stage specialization maps onto action dimensions. We zero each token embedding in turn, decode the intervened sequence with the native ODE decoder at 1 step (matching the deployed VLA&rsquo;s <em>flow_steps=1</em>), and measure the resulting per-dimension trajectory change.
       </p>
     </div>
 
@@ -247,12 +234,12 @@
       <img src="./media/causality_mask_effect_step1.png" alt="Per-dimension trajectory change under single-token zeroing" style="width:100%; display:block;">
     </div>
     <p class="figure-caption">
-      <strong>Figure 8. Per-dimension trajectory change under single-token zeroing (1-step decode).</strong> Each cell is the RMS change of an action dimension (log color) when token <em>k</em> is zeroed. Early tokens (<em>k</em> &le; 4) perturb primarily the gripper-related dimension&mdash;the gripper command reflects the task-execution state, so these tokens encode a coarse description of task progress. Late tokens (<em>k</em> &ge; 12) perturb individual joint dimensions, encoding the fine-grained motion needed to specify and refine the trajectory. Token roles thus progress from coarse gripper/task-state information to fine joint/trajectory-detail information&mdash;confirming expectation (ii). This organization is learned through flow-stage alignment; it is not a hand-designed assignment of token semantics.
+      <strong>Figure 8. Per-dimension trajectory change under single-token zeroing (1-step decode).</strong> Each cell is the RMS change of an action dimension (log color) when token <em>k</em> is zeroed. Early tokens (<em>k</em> &le; 4) perturb primarily the gripper-related dimension&mdash;the gripper command reflects the task-execution state, so these tokens encode a coarse description of task progress. Late tokens (<em>k</em> &ge; 12) perturb individual joint dimensions, encoding the fine-grained motion needed to specify and refine the trajectory. The footprint of each token thus progresses from coarse gripper/task-state information to fine joint/trajectory-detail information along the token order. This organization is learned through flow-stage alignment; it is not a hand-designed assignment of token semantics.
     </p>
 
     <div class="section" style="margin-top: 8px;">
       <p>
-        <strong>Together,</strong> the three points establish that (1) conditional annealing defines a learned coarse-to-fine refinement process, (2) donor swaps verify that token effects are distinct and aligned with their assigned flow stages, and (3) single-token zeroing reveals the corresponding functional progression from early gripper/task-state information to late joint/trajectory-detail information.
+        Taken together, the donor-swap and zeroing results show that conditional annealing induces a learned coarse-to-fine refinement process: token effects are distinct and aligned with their assigned flow stages, and their action-dimension footprint progresses from coarse gripper/task-state information to fine joint/trajectory-detail information.
       </p>
     </div>
 
