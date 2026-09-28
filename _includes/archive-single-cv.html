@@ -43,6 +43,8 @@
       <p class="archive__item-excerpt" itemprop="description"><em>In Submission to <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }}</em></p>
     {% elsif post.category == 'submissions' %}
       <p class="archive__item-excerpt" itemprop="description"><em>In Submission, {{ post.date | default: "1900-01-01" | date: "%Y" }}</em></p>
+    {% elsif post.category == 'accepted' %}
+      <p class="archive__item-excerpt" itemprop="description"><em>Accepted to <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }}</em></p>
     {% elsif post.venue %}
       <p class="archive__item-excerpt" itemprop="description">Published in <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }}</p>
     {% endif %}

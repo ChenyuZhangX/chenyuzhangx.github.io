@@ -53,6 +53,8 @@
             <p><em>In Submission to <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }}</em></p>
           {% elsif post.category == 'submissions' %}
             <p><em>In Submission, {{ post.date | default: "1900-01-01" | date: "%Y" }}</em></p>
+          {% elsif post.category == 'accepted' %}
+            <p><em>Accepted to <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }}</em></p>
           {% elsif post.venue %}
             <p>Published in <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }} </p>
           {% endif %}

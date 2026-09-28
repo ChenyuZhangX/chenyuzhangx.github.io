@@ -49,6 +49,8 @@ layout: default
             <p><em>In Submission to <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }}</em></p>
           {% elsif page.category == 'submissions' %}
             <p><em>In Submission, {{ page.date | default: "1900-01-01" | date: "%Y" }}</em></p>
+          {% elsif page.category == 'accepted' %}
+            <p><em>Accepted to <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }}</em></p>
           {% elsif page.venue %}
             <p>Published in <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }} </p>
           {% endif %}
