@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CATok Poster — Abstract</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-sans@latest/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-mono@latest/index.css">
+<link rel="stylesheet" href="poster.css">
+</head>
+<body>
+<div class="poster">
+  <div class="p-header">
+    <div class="p-brand">CA<span>Tok</span></div>
+    <div class="p-meta">NeurIPS 2026 &middot; arXiv:2609.35469</div>
+  </div>
+  <div class="p-body">
+    <p class="eyebrow">Abstract</p>
+    <h2 class="p-title">Tokenization as a causally structured generative process</h2>
+    <div class="prose">
+      <p>Autoregressive Vision-Language-Action (VLA) models offer a scalable path to robot learning, yet existing action tokenizers treat tokenization as a compression problem, producing representations that are semantically misaligned with the autoregressive backbone. We propose <strong>CATok</strong>, a causal action tokenizer that reframes tokenization as a causally structured generative process.</p>
+      <p>CATok introduces a <em>conditional annealing mechanism</em> that extracts action tokens by progressively annealing a flow-matching process: each token is conditioned on all preceding tokens and encodes the residual reconstruction signal at a specific noise level, establishing a coarse-to-fine causal token space whose generative semantics are structurally aligned with autoregressive modeling. A <em>token-conditioned flow-matching decoder</em> built on Multimodal Diffusion Transformer (MMDiT) reconstructs continuous action chunks from these discrete tokens with the precision of hybrid diffusion-head architectures. This discrete bottleneck enforces <em>knowledge insulation</em> by design, cleanly separating high-level semantic reasoning from low-level motor execution without requiring explicit attention masking.</p>
+      <p>Extensive evaluations across three simulation benchmarks demonstrate that CATok consistently surpasses existing tokenization methods in reconstruction fidelity&ndash;compression tradeoff and inference efficiency, while improving VLA task success rate, establishing a high-performance, scalable foundation for purely autoregressive VLA systems.</p>
+    </div>
+  </div>
+  <div class="p-footer">
+    <span>chenyuzhangx.github.io/CATok</span>
+    <span>IIIS, Tsinghua University &middot; Shanghai Qizhi Institute</span>
+  </div>
+</div>
+</body>
+</html>

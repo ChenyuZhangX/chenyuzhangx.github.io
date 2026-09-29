@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CATok Poster — Real-World Deployment</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-sans@latest/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-mono@latest/index.css">
+<link rel="stylesheet" href="poster.css">
+</head>
+<body>
+<div class="poster">
+  <div class="p-header">
+    <div class="p-brand">CA<span>Tok</span></div>
+    <div class="p-meta">NeurIPS 2026 &middot; arXiv:2609.35469</div>
+  </div>
+  <div class="p-body">
+    <p class="eyebrow">Real-World Deployment</p>
+    <h2 class="p-title">From simulation to the physical world</h2>
+    <div class="prose">
+      <p>We collect 362 trajectories of <em>&ldquo;pick up the yellow cup and place it on the plate&rdquo;</em> and 220 trajectories of <em>&ldquo;stack the cups&rdquo;</em>. Using Qwen3.5-VL as the backbone, we train two VLAs that differ only in their tokenizer&mdash;<strong>QwenFAST</strong> and <strong>QwenCATok</strong>. CATok is pretrained on the collected real-robot data together with InternA1 joint data, so that its action reconstruction accuracy matches that of FAST.</p>
+    </div>
+
+    <div class="card-grid cols-3">
+      <figure class="card fig task">
+        <img src="./media/setup_pick.jpg" alt="Pick-Spatial scene layout">
+        <figcaption><strong>Pick-Spatial</strong><span>10 fixed cup-plate positions &times; 2 rollouts. Tests spatial generalization.</span></figcaption>
+      </figure>
+      <figure class="card fig task">
+        <img src="./media/setup_pick-red.jpg" alt="Pick-Color scene layout">
+        <figcaption><strong>Pick-Color</strong><span>Unseen red cup, fixed position &times; 10 rollouts. Tests color generalization.</span></figcaption>
+      </figure>
+      <figure class="card fig task">
+        <img src="./media/setup_stack.jpg" alt="Stack-Long scene layout">
+        <figcaption><strong>Stack-Long</strong><span>Stack two cups in sequence &times; 40 rollouts. Tests long-horizon completion.</span></figcaption>
+      </figure>
+    </div>
+
+    <h3 class="subsection-title">Rollout comparison</h3>
+    <div class="demo-matrix">
+      <span class="dm-corner"></span>
+      <span class="dm-colhead">Pick</span>
+      <span class="dm-colhead">Pick (Red)</span>
+      <span class="dm-colhead">Stack</span>
+
+      <span class="dm-rowhead">QwenCATok<em>ours</em></span>
+      <figure class="dm-cell"><video autoplay loop muted playsinline preload="auto"><source src="./media/catok_pick_success.mp4" type="video/mp4"></video></figure>
+      <figure class="dm-cell"><video autoplay loop muted playsinline preload="auto"><source src="./media/catok_pick_red_success.mp4" type="video/mp4"></video></figure>
+      <figure class="dm-cell"><video autoplay loop muted playsinline preload="auto"><source src="./media/catok_stack_success.mp4" type="video/mp4"></video></figure>
+
+      <span class="dm-rowhead">QwenFAST</span>
+      <figure class="dm-cell"><video autoplay loop muted playsinline preload="auto"><source src="./media/fast_pick_success.mp4" type="video/mp4"></video></figure>
+      <figure class="dm-cell"><video autoplay loop muted playsinline preload="auto"><source src="./media/fast_pick_red_success.mp4" type="video/mp4"></video></figure>
+      <figure class="dm-cell"><video autoplay loop muted playsinline preload="auto"><source src="./media/fast_stack_success.mp4" type="video/mp4"></video></figure>
+    </div>
+    <p class="fig-note">Figure 8 &middot; Real-world rollout comparison. Top row: <strong>QwenCATok</strong> (ours); bottom row: <strong>QwenFAST</strong>. Each cell is a single, unedited end-to-end rollout.</p>
+
+    <div class="card table-card">
+      <table>
+        <thead>
+          <tr><th>Method</th><th>Pick-Spatial</th><th>Pick-Color</th><th>Stack-Long</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>QwenFAST</td><td>0.45</td><td>0.30</td><td>0.275</td></tr>
+          <tr class="ours"><td>QwenCATok (Ours)</td><td class="best">0.65</td><td class="best">0.50</td><td class="best">0.475</td></tr>
+        </tbody>
+      </table>
+      <p class="card-note">Table 2 &middot; Real-world success rates. QwenCATok improves over QwenFAST by +20pp absolute on all three tasks.</p>
+    </div>
+  </div>
+  <div class="p-footer">
+    <span>chenyuzhangx.github.io/CATok</span>
+    <span>IIIS, Tsinghua University &middot; Shanghai Qizhi Institute</span>
+  </div>
+</div>
+</body>
+</html>

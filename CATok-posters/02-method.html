@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CATok Poster — Method</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-sans@latest/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-mono@latest/index.css">
+<link rel="stylesheet" href="poster.css">
+</head>
+<body>
+<div class="poster">
+  <div class="p-header">
+    <div class="p-brand">CA<span>Tok</span></div>
+    <div class="p-meta">NeurIPS 2026 &middot; arXiv:2609.35469</div>
+  </div>
+  <div class="p-body">
+    <p class="eyebrow">Method</p>
+    <h2 class="p-title">Three components, one causal schedule</h2>
+
+    <div class="card-grid cols-3">
+      <div class="card feature">
+        <p class="feature-num">01</p>
+        <h3>Dual-Stream Action Encoder</h3>
+        <p>Maps raw action chunks into a compact set of latent query tokens via co-attention with an MMDiT-based transformer.</p>
+      </div>
+      <div class="card feature">
+        <p class="feature-num">02</p>
+        <h3>Bottleneck Vector Quantizer</h3>
+        <p>Discretizes latent tokens into a finite codebook using factorized codes.</p>
+      </div>
+      <div class="card feature">
+        <p class="feature-num">03</p>
+        <h3>Flow-Matching Decoder</h3>
+        <p>Reconstructs high-fidelity action trajectories with conditional annealing, enforcing a coarse-to-fine causal structure.</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>The key design is the <em>conditional annealing mechanism</em>: at flow-matching timestep <em>t</em>, the first &lfloor;<em>tK</em>&rfloor; token embeddings are progressively masked, forcing each token to specialize in a distinct generative stage&mdash;from coarse global guidance at high-noise stages to fine-grained residual corrections as the trajectory matures. This induces a causally ordered hierarchy naturally aligned with autoregressive action generation.</p>
+    </div>
+
+    <figure class="card fig">
+      <img src="./media/0506_CATok.png" alt="CATok Architecture Overview">
+      <figcaption><strong>Figure 1 &middot; CATok Pipeline.</strong> CATok encodes an action chunk with a Dual-Stream Encoder into latent queries, discretizes them via a Bottleneck VQ, and reconstructs actions using a Flow-Matching Decoder with Conditional Annealing. The annealing schedule assigns each token to a distinct stage of the flow trajectory, establishing a coarse-to-fine causal token space.</figcaption>
+    </figure>
+
+    <figure class="card fig">
+      <img src="./media/0506_VLA-CATok.png" alt="VLA-CATok Overview">
+      <figcaption><strong>Figure 2 &middot; VLA-CATok.</strong> VLA-CATok feeds visual, language, and proprioceptive tokens into a VLM backbone to autoregressively predict causal action tokens. A frozen MMDiT flow-matching decoder reconstructs the final continuous action. Discrete tokens serve as the sole interface, naturally insulating the VLM's pretrained knowledge from action-specific gradients.</figcaption>
+    </figure>
+  </div>
+  <div class="p-footer">
+    <span>chenyuzhangx.github.io/CATok</span>
+    <span>IIIS, Tsinghua University &middot; Shanghai Qizhi Institute</span>
+  </div>
+</div>
+</body>
+</html>

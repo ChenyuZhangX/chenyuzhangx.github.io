@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CATok Poster — Main Results</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-sans@latest/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-mono@latest/index.css">
+<link rel="stylesheet" href="poster.css">
+</head>
+<body>
+<div class="poster">
+  <div class="p-header">
+    <div class="p-brand">CA<span>Tok</span></div>
+    <div class="p-meta">NeurIPS 2026 &middot; arXiv:2609.35469</div>
+  </div>
+  <div class="p-body">
+    <p class="eyebrow">Main Results</p>
+    <h2 class="p-title">Better success rate, faster inference, fewer steps</h2>
+
+    <div class="card-grid cols-4">
+      <div class="card stat"><p class="stat-num">95.9<span class="stat-unit">%</span></p><p class="stat-label">Avg. success on LIBERO</p></div>
+      <div class="card stat"><p class="stat-num">1.7&times;</p><p class="stat-label">Faster VLA inference than FAST</p></div>
+      <div class="card stat"><p class="stat-num">3.6&times;</p><p class="stat-label">VRR&times;CR of FAST at equal tokens</p></div>
+      <div class="card stat"><p class="stat-num">~50<span class="stat-unit">%</span></p><p class="stat-label">Steps to match the best baseline</p></div>
+    </div>
+
+    <div class="prose">
+      <p>We evaluate CATok on three simulation benchmarks&mdash;LIBERO, SimplerEnv (Simpler-Bridge), and RoboTwin 2.0&mdash;against three representative tokenizer baselines: <strong>BIN</strong> (uniform per-dimension discretization), <strong>FAST</strong> (DCT-based compression with BPE tokenization), and <strong>OAT</strong> (learned fixed-length tokenizer with prefix-based decoding).</p>
+    </div>
+
+    <div class="card table-card">
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2">Method</th>
+            <th colspan="5" class="group">LIBERO</th>
+            <th colspan="5" class="group">Simpler-Bridge</th>
+            <th colspan="2" class="group">RoboTwin 2.0</th>
+          </tr>
+          <tr>
+            <th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th><th>Avg.</th>
+            <th>Spoon</th><th>Carrot</th><th>Stack</th><th>Eggplant</th><th>Avg.</th>
+            <th>Clean</th><th>Rand.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BIN</td>
+            <td>0.586</td><td>0.878</td><td>0.680</td><td>0.604</td><td>0.687</td>
+            <td class="best">0.542</td><td>0.333</td><td>0.208</td><td class="best">0.708</td><td>0.448</td>
+            <td>0.213</td><td>0.221</td>
+          </tr>
+          <tr>
+            <td>FAST</td>
+            <td>0.960</td><td class="best">0.998</td><td class="best">0.962</td><td>0.901</td><td>0.955</td>
+            <td>0.500</td><td>0.375</td><td>0.375</td><td>0.625</td><td>0.469</td>
+            <td>0.478</td><td>0.478</td>
+          </tr>
+          <tr>
+            <td>OAT</td>
+            <td>0.428</td><td>0.876</td><td>0.704</td><td>0.276</td><td>0.571</td>
+            <td>0.417</td><td>0.208</td><td>0.167</td><td>0.667</td><td>0.365</td>
+            <td>0.229</td><td>0.233</td>
+          </tr>
+          <tr class="ours">
+            <td>CATok (Ours)</td>
+            <td class="best">0.978</td><td>0.994</td><td>0.954</td><td class="best">0.910</td><td class="best">0.959</td>
+            <td>0.458</td><td class="best">0.417</td><td class="best">0.542</td><td>0.542</td><td class="best">0.490</td>
+            <td class="best">0.489</td><td class="best">0.531</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="card-note">Table 1 &middot; Simulation benchmarking results. <span class="best">Accent bold</span> marks the best result per column.</p>
+    </div>
+
+    <div class="card-grid cols-2">
+      <figure class="card fig">
+        <img src="./media/training_efficiency.png" alt="Training Efficiency">
+        <figcaption><strong>Figure 3 &middot; Training efficiency on Simpler-Bridge.</strong> CATok achieves higher success rates with fewer training steps.</figcaption>
+      </figure>
+      <figure class="card fig">
+        <img src="./media/infer_speed_bar_errbar.png" alt="Inference Latency">
+        <figcaption><strong>Figure 4 &middot; VLA inference latency.</strong> CATok (453 ms) is 1.7&times; faster than FAST (778 ms) and 3.9&times; faster than Binning (1747 ms).</figcaption>
+      </figure>
+    </div>
+
+    <figure class="card fig">
+      <img src="./media/table2_bar.png" alt="Intrinsic Tokenizer Properties">
+      <figcaption><strong>Figure 5 &middot; Intrinsic properties of action tokenizers.</strong> (a&ndash;c) CATok<sub>8</sub> achieves the highest VRR&times;CR score (16.85), outperforming all baselines at the same compression level. (d&ndash;e) Encode and decode latencies on log scale&mdash;CATok achieves lower latency than FAST with comparable or better downstream performance.</figcaption>
+    </figure>
+  </div>
+  <div class="p-footer">
+    <span>chenyuzhangx.github.io/CATok</span>
+    <span>IIIS, Tsinghua University &middot; Shanghai Qizhi Institute</span>
+  </div>
+</div>
+</body>
+</html>

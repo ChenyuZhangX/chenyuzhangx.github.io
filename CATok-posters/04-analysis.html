@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CATok Poster — Analysis</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-sans@latest/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-mono@latest/index.css">
+<link rel="stylesheet" href="poster.css">
+</head>
+<body>
+<div class="poster">
+  <div class="p-header">
+    <div class="p-brand">CA<span>Tok</span></div>
+    <div class="p-meta">NeurIPS 2026 &middot; arXiv:2609.35469</div>
+  </div>
+  <div class="p-body">
+    <p class="eyebrow">Analysis</p>
+    <h2 class="p-title">Causal tokens with generative semantics</h2>
+    <div class="prose">
+      <p><strong>Causal Predictive Ordering.</strong> Per-token Shannon entropy decreases monotonically in the forward token order (Figure 6a), while reversing the order flips the trend&mdash;confirming the learned ordering is directional and causal. FAST and BIN show no such structure.</p>
+      <p><strong>Stage-wise Generative Semantics.</strong> t-SNE of VQ embeddings (Figure 6b) reveals clear slot-dependent geometry: early tokens form smooth elongated regions, late tokens form compact separated clusters. Prefix reconstructions (Figure 6c) show coherent coarse-to-fine trajectory updates, confirming each token contributes a distinct generative increment.</p>
+    </div>
+    <figure class="card fig">
+      <img src="./media/exp_tokenizer_v3.png" alt="Causal Token Analysis">
+      <figcaption><strong>Figure 6 &middot; CATok produces causal tokens with generative semantics.</strong> (a) <strong>Causal ordering:</strong> entropy decreases in the forward token order and increases in reverse. (b) <strong>Token embedding geometry:</strong> slot-dependent organization from smooth early-token regions to compact late-token clusters. (c) <strong>Prefix reconstruction:</strong> increasing prefixes produce structured coarse-to-fine trajectory updates.</figcaption>
+    </figure>
+  </div>
+  <div class="p-footer">
+    <span>chenyuzhangx.github.io/CATok</span>
+    <span>IIIS, Tsinghua University &middot; Shanghai Qizhi Institute</span>
+  </div>
+</div>
+</body>
+</html>

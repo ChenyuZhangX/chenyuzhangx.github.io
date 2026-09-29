@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CATok Poster — Causality Validation</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-sans@latest/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/geist-mono@latest/index.css">
+<link rel="stylesheet" href="poster.css">
+</head>
+<body>
+<div class="poster">
+  <div class="p-header">
+    <div class="p-brand">CA<span>Tok</span></div>
+    <div class="p-meta">NeurIPS 2026 &middot; arXiv:2609.35469</div>
+  </div>
+  <div class="p-body">
+    <p class="eyebrow">Causality Validation</p>
+    <h2 class="p-title">Coarse-to-fine token roles, validated by intervention</h2>
+    <div class="prose">
+      <p>We use a native-decoder intervention&mdash;a donor-swap at the velocity level&mdash;to characterize the generative roles of individual token positions. Under conditional annealing, token <em>k</em> is bound to flow stage <em>k</em> via suffix masking, so as flow matching refines the trajectory from high- to low-noise stages, each token is trained to contribute at a particular refinement stage. We examine whether the learned tokens acquire <strong>distinct, flow-stage-aligned effects</strong> and a <strong>coarse-to-fine functional progression</strong> in action space; here, &ldquo;coarse-to-fine&rdquo; denotes the granularity of learned control information along the refinement process, not a prescribed frequency or fixed-basis decomposition.</p>
+      <p>We use the trained CATok tokenizer checkpoint (<em>K</em>=32, codebook 4096, horizon 20), its MMDiT velocity network <em>v<sub>&theta;</sub></em>, and its ODE decoder <em>D</em>&mdash;the same modules used at inference, not a separately trained prefix decoder. We encode 128 held-out Franka action chunks (7-DoF + gripper) as <em>Q</em> = (<em>q</em><sub>1</sub>, &hellip;, <em>q<sub>K</sub></em>). For each token <em>k</em>, we replace its embedding with the same-position embedding from a donor chunk&mdash;keeping the intervention within the slot&rsquo;s empirical distribution&mdash;while holding <em>x<sub>t</sub></em>, <em>t</em>, and the noise realization fixed, so the resulting change isolates token <em>k</em>&rsquo;s effect on the velocity prediction. Because conditional annealing masks token <em>k</em> outside its active range, we normalize its effect within that range.</p>
+    </div>
+    <figure class="card fig">
+      <img src="./media/causality_influence_matrix.png" alt="Token x flow-time influence matrix">
+      <figcaption><strong>Figure 7 &middot; Token &times; flow-time influence matrix &Delta;(t).</strong> Top: 32 individual tokens, raw (a) and per-token-normalized (b). Bottom: 8 groups of 4 tokens, raw (c) and per-group-normalized (d); cyan &ldquo;+&rdquo; marks the theoretical peak stage. The matrix has triangular support&mdash;token <em>k</em> is visible only for <em>t</em> &lt; (<em>k</em>+1)/<em>K</em>, confirming the schedule &kappa;(t)=<em>tK</em>&mdash;and each token&rsquo;s influence concentrates near its own on-switch boundary (<strong>corr(<em>g</em>, <em>t*</em>) = 0.995</strong> grouped).</figcaption>
+    </figure>
+    <div class="prose">
+      <ul class="ticks">
+        <li><strong>Schedule-consistent support.</strong> Token <em>k</em> is visible only for <em>t</em> &lt; (<em>k</em>+1)/<em>K</em>, consistent with the suffix-masking schedule &kappa;(t) = <em>tK</em>.</li>
+        <li><strong>Stage-specific peaks.</strong> Each token&rsquo;s peak influence occurs near its assigned stage <em>t*</em> &asymp; <em>k</em>/<em>K</em>, with <strong>corr(<em>k</em>, <em>t*</em>) = 0.985</strong> (0.995 after grouping). Early tokens peak at high-noise (coarse) stages and late tokens at low-noise (fine) stages, so token effects are distinct and aligned with their assigned flow stages rather than interchangeable.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="p-footer">
+    <span>chenyuzhangx.github.io/CATok</span>
+    <span>IIIS, Tsinghua University &middot; Shanghai Qizhi Institute</span>
+  </div>
+</div>
+</body>
+</html>
