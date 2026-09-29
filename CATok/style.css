@@ -133,18 +133,17 @@ body {
 
 .quick-links a {
   display: inline-block;
-  padding: 7px 18px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--accent-light);
   text-decoration: none;
-  font-size: 14px;
-  transition: background 0.2s, border-color 0.2s;
+  transition: opacity 0.15s;
 }
 
 .quick-links a:hover {
-  background: var(--surface);
-  border-color: var(--accent);
+  opacity: 0.85;
+}
+
+.quick-links a img {
+  display: block;
+  height: 28px;
 }
 
 /* ── Teaser video ── */
